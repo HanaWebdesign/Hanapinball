@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  background: linear-gradient(to bottom, #000000, #3a003a);
+  font-family: "Yu Gothic", sans-serif;
+  overflow: hidden;
+}
+
+.title {
+  color: #ff99cc;
+  text-align: center;
+  padding: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px #000;
+}
+
+#gameCanvas {
+  display: block;
+  margin: 0 auto;
+  background-color: #1a001a;
+  border: 3px dashed #ff66cc;
+}
+
+#leftTouch,
+#rightTouch {
+  position: fixed;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  z-index: 10;
+}
+
+#leftTouch {
+  left: 0;
+}
+
+#rightTouch {
+  right: 0;
+}
