@@ -3,7 +3,7 @@ body {
   background: linear-gradient(to bottom, #000000, #3a003a);
   font-family: "Yu Gothic", sans-serif;
   overflow: hidden;
-  touch-action: manipulation; /* タップの誤動作防止 */
+  touch-action: manipulation;
 }
 
 .title {
@@ -18,26 +18,53 @@ body {
 #gameCanvas {
   display: block;
   width: 100vw;
-  height: 80vh;
+  height: 70vh;
   background-color: #1a001a;
   border: 3px dashed #ff66cc;
 }
 
-#leftTouch,
-#rightTouch {
+#launchBtn {
+  width: 100%;
+  padding: 20px;
+  background-color: #ff99cc;
+  color: #000;
+  font-size: 24px;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/* スマホ用の矢印ボタン */
+.mobile-controls {
   position: fixed;
-  top: 0;
-  width: 50vw;
-  height: 100vh;
-  z-index: 10;
-  /* デバッグ用に背景色つけてもOK：
-  background-color: rgba(255, 0, 255, 0.1); */
+  bottom: 20px;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 30px;
+  display: none; /* デフォルトでは非表示 */
 }
 
-#leftTouch {
-  left: 0;
+.mobile-controls button {
+  background-color: #ff99cc;
+  border: none;
+  font-size: 36px;
+  border-radius: 50%;
+  padding: 20px;
+  box-shadow: 0 0 10px #ff66cc;
+  cursor: pointer;
 }
 
-#rightTouch {
-  right: 0;
+/* スマホ（768px以下）のときだけ表示 */
+@media (max-width: 768px) {
+  .mobile-controls {
+    display: flex;
+  }
+}
+
+/* PC（769px以上）のときは非表示 */
+@media (min-width: 769px) {
+  .mobile-controls {
+    display: none;
+  }
 }
