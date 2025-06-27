@@ -1,16 +1,17 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// 画面サイズ調整
+// 画面サイズをレスポンシブに
 function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight * 0.85;
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
 }
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-// スコア
+// スコアとエフェクト配列
 let score = 0;
+const effects = [];
 
 // ボールの状態
 const ball = {
@@ -53,7 +54,7 @@ function updateBall() {
   }
 }
 
-// バンパーと接触したら跳ね返して得点
+// バンパーとの当たり判定
 function checkBumperCollision() {
   bumpers.forEach((bumper) => {
     const dx = ball.x - bumper.x;
@@ -65,11 +66,20 @@ function checkBumperCollision() {
       ball.vx = Math.cos(angle) * 5;
       ball.vy = Math.sin(angle) * 5;
       score += 100;
+
+      // 💥 キラキラエフェクト
+      effects.push({
+        x: bumper.x,
+        y: bumper.y,
+        radius: 0,
+        maxRadius: 30,
+        alpha: 1.0
+      });
     }
   });
 }
 
-// ボールを描画
+// ボール描画
 function drawBall() {
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
@@ -90,11 +100,30 @@ function drawBumper() {
   });
 }
 
-// スコア表示
+// スコア描画
 function drawScore() {
   ctx.fillStyle = '#ffffff';
   ctx.font = 'bold 20px Yu Gothic';
   ctx.fillText(`Score: ${score}`, 10, 30);
+}
+
+// エフェクト描画
+function drawEffects() {
+  for (let i = effects.length - 1; i >= 0; i--) {
+    const e = effects[i];
+    e.radius += 1;
+    e.alpha -= 0.03;
+
+    ctx.beginPath();
+    ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(255, 255, 255, ${e.alpha})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    if (e.alpha <= 0) {
+      effects.splice(i, 1); // 消えたら削除
+    }
+  }
 }
 
 // メインループ
@@ -104,6 +133,7 @@ function gameLoop() {
   updateBall();
   checkBumperCollision();
   drawBumper();
+  drawEffects();
   drawBall();
   drawScore();
 
@@ -112,8 +142,7 @@ function gameLoop() {
 
 gameLoop();
 
-
-// 左右タップでボールを上に打ち返す
+// タップ（スマホ）
 document.getElementById('leftTouch').addEventListener('touchstart', () => {
   ball.vy = -7;
   ball.vx = -3;
@@ -124,8 +153,7 @@ document.getElementById('rightTouch').addEventListener('touchstart', () => {
   ball.vx = 3;
 });
 
-// キーボード操作（PC用）
-// Aキーで左、Dキーで右に打ち返す
+// キーボード（PC）
 document.addEventListener('keydown', (e) => {
   if (e.key === 'a' || e.key === 'A') {
     ball.vy = -7;
@@ -135,15 +163,4 @@ document.addEventListener('keydown', (e) => {
     ball.vy = -7;
     ball.vx = 3;
   }
-});
-
-// タップ操作（スマホ用）
-document.getElementById('leftTouch').addEventListener('touchstart', () => {
-  ball.vy = -7;
-  ball.vx = -3;
-});
-
-document.getElementById('rightTouch').addEventListener('touchstart', () => {
-  ball.vy = -7;
-  ball.vx = 3;
 });

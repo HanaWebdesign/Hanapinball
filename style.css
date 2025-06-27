@@ -3,6 +3,7 @@ body {
   background: linear-gradient(to bottom, #000000, #3a003a);
   font-family: "Yu Gothic", sans-serif;
   overflow: hidden;
+  touch-action: manipulation; /* タップの誤動作防止 */
 }
 
 .title {
@@ -16,7 +17,8 @@ body {
 
 #gameCanvas {
   display: block;
-  margin: 0 auto;
+  width: 100vw;
+  height: 80vh;
   background-color: #1a001a;
   border: 3px dashed #ff66cc;
 }
@@ -25,9 +27,11 @@ body {
 #rightTouch {
   position: fixed;
   top: 0;
-  width: 50%;
-  height: 100%;
+  width: 50vw;
+  height: 100vh;
   z-index: 10;
+  /* デバッグ用に背景色つけてもOK：
+  background-color: rgba(255, 0, 255, 0.1); */
 }
 
 #leftTouch {
